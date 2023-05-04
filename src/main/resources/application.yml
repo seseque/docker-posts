@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: ${DATABASE_URL}
-    username: kmp_posts
-    password: kmp_posts
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5433/kmp_posts}
+    username: ${POSTGRES_USER:kmp_posts}
+    password: ${POSTGRES_PASSWORD:kmp_posts}
   jpa:
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -13,3 +13,7 @@ spring:
 liquibase:
   db:
     changeLog: "classpath:db/changelog-master.yml"
+
+services:
+  users:
+    origin: ${USERS_ORIGIN}

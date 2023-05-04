@@ -1,5 +1,10 @@
 package com.github.seseque.dockerposts.posts;
 
-public class PostRes {
+import lombok.Data;
 
+@Data
+public class PostRes {
+    Integer id;
+    Integer authorId;
+    String text;
 }

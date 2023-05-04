@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PostReq {
+    Integer authorId;
     String text;
 
 }
