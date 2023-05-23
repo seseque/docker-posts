@@ -6,7 +6,7 @@ public interface PostService {
 
     PostRes getPost(Long id);
 
-    void deletePost(Long id);
+    PostRes deletePost(Long id);
 
-    PostRes updatePost(Long id, PostReq post);
+    PostRes updatePost(Long id, PostUpdReq post);
 }

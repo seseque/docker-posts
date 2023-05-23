@@ -28,14 +28,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(Long id) {
+    public PostRes deletePost(Long id) {
         Post saved = postRepository.getReferenceById(id);
-        updateAmountOfPosts(saved.userId,  -1);
+        updateAmountOfPosts(saved.getUserId(),  -1);
         postRepository.deleteById(id);
+        return postMapper.toResponse(saved);
     }
 
     @Override
-    public PostRes updatePost(Long id, PostReq postReq) {
+    public PostRes updatePost(Long id, PostUpdReq postReq) {
         Post saved = postRepository.getReferenceById(id);
         saved.setText(postReq.getText());
         return postMapper.toResponse(postRepository.save(saved));
@@ -44,7 +45,6 @@ public class PostServiceImpl implements PostService {
     private void updateAmountOfPosts(Number userId, Integer amount) {
         UpdateUsersPostsReq req = new UpdateUsersPostsReq(amount);
         String url = userServiceProperties.origin + "/users/%s/posts".formatted(userId);
-        System.out.println(url);
         restTemplate.put(url, req);
     }
 }

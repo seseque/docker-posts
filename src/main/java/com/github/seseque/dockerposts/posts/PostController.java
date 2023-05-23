@@ -1,7 +1,9 @@
 package com.github.seseque.dockerposts.posts;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,22 +24,34 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    PostRes createPost(@RequestBody PostReq Post) {
-        return PostService.createPost(Post);
+    ResponseEntity<PostRes> createPost(@RequestBody @Valid PostReq Post) {
+        return ResponseEntity.ok(PostService.createPost(Post));
     }
 
     @GetMapping("/posts/{id}")
-    PostRes getPost(@PathVariable Long id) {
-        return PostService.getPost(id);
+    ResponseEntity<PostRes> getPost(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(PostService.getPost(id));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/posts/{id}")
-    void deletePost(@PathVariable Long id) {
-        PostService.deletePost(id);
+    ResponseEntity<PostRes> deletePost(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(PostService.deletePost(id));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/posts/{id}")
-    PostRes updatePost(@PathVariable Long id, @RequestBody PostReq Post) {
-        return PostService.updatePost(id, Post);
+    ResponseEntity<PostRes> updatePost(@PathVariable Long id, @RequestBody @Valid PostUpdReq Post) {
+        try {
+            return ResponseEntity.ok(PostService.updatePost(id, Post));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
